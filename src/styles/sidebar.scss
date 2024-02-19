@@ -5,6 +5,7 @@
     transition: margin-left .28s;
     margin-left: $sideBarWidth;
     position: relative;
+    background-color: #f4f6f8;
   }
 
   .sidebar-container {
@@ -76,18 +77,33 @@
       }
     }
 
-    .is-active>.el-submenu__title {
+    >.el-submenu__title {
       color: $subMenuActiveText !important;
     }
+
+    .submenu-title-noDropdown.is-active{
+      background-color: #edf5ff !important;
+    }
+
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
       background-color: $subMenuBg !important;
 
+
       &:hover {
         background-color: $subMenuHover !important;
       }
+    }
+
+    & .nest-menu .el-submenu>.el-submenu__title,
+    & .el-submenu .el-menu-item.is-active {
+
+      background-color: #edf5ff !important;
+
+
+
     }
   }
 
