@@ -2,6 +2,7 @@ import axios from "axios";
 import { MessageBox, Message } from "element-ui";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
+import router from "@/router";
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -22,42 +23,43 @@ service.interceptors.request.use(
   }
 );
 
-// response interceptor
+// 响应拦截器
 service.interceptors.response.use(
   (response) => {
     // 对返回的数据解构了一层data
     const res = response.data;
 
-    if (res.code !== 10000) {
+    // 请求成功
+    if (res.code === 10000) {
+      return res;
+    }
+
+    // 请求失败的统一处理
+    Message({
+      message: res.msg || "Error",
+      type: "error",
+      duration: 5 * 1000,
+    });
+    return Promise.reject(new Error(res.msg || "Error"));
+  },
+  async (error) => {
+    // token失效处理
+    if (error.response.status === 401 && error.response.data.code === 40001) {
+      // 1.清除token与用户信息
+      await store.dispatch("user/logout");
+
+      // 2. 跳转到登录
+      router.push("/login");
+
+      // 3.跳转到登录页
       Message({
-        message: res.message || "Error",
+        message: "登录已过期，请重新登录",
         type: "error",
         duration: 5 * 1000,
       });
-
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm(
-          "You have been logged out, you can cancel to stay on this page, or log in again",
-          "Confirm logout",
-          {
-            confirmButtonText: "Re-Login",
-            cancelButtonText: "Cancel",
-            type: "warning",
-          }
-        ).then(() => {
-          store.dispatch("user/resetToken").then(() => {
-            location.reload();
-          });
-        });
-      }
-      return Promise.reject(new Error(res.message || "Error"));
-    } else {
-      return res;
+      return Promise.reject(new Error("登录已过期，请重新登录"));
     }
-  },
-  (error) => {
-    console.log("err" + error); // for debug
+
     Message({
       message: error.message,
       type: "error",
