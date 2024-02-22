@@ -41,7 +41,9 @@
     <!-- 操作区域 -->
     <div class="action">
       <div class="button-group">
-        <el-button type="primary">添加月卡</el-button>
+        <el-button type="primary" @click="$router.push('/car/addMonthCard')"
+          >添加月卡</el-button
+        >
         <el-button type="primary">批量删除</el-button>
       </div>
       <div class="tip-info">
@@ -64,10 +66,14 @@
       <el-table-column prop="cardStatus" label="状态" :formatter="formatStatus">
       </el-table-column>
       <el-table-column label="操作" width="180">
-        <template>
+        <template v-slot="{ row }">
           <el-button type="text">续费</el-button>
           <el-button type="text">查看</el-button>
-          <el-button type="text">编辑</el-button>
+          <el-button
+            type="text"
+            @click="$router.push(`/car/editMonthCard/${row.id}`)"
+            >编辑</el-button
+          >
           <el-button type="text">删除</el-button>
         </template>
       </el-table-column>
