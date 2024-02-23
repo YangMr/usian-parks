@@ -186,7 +186,6 @@ export default {
               };
 
               const res = await editMonthCardApi(data);
-              console.log("ress=>", res);
 
               this.$router.push("/car/card");
             }
@@ -200,7 +199,7 @@ export default {
     },
     async initCardDetail() {
       const { data } = await getMonthCardDetailApi(this.id);
-      console.log("aaa=>", data);
+
       this.carInfoForm = {
         personName: data.personName,
         phoneNumber: data.phoneNumber,

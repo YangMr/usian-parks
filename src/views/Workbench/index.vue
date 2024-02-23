@@ -18,7 +18,6 @@ export default {
   methods: {
     async getList() {
       const res = await test();
-      console.log("resss=>", res);
     },
   },
 };

@@ -44,7 +44,9 @@
         <el-button type="primary" @click="$router.push('/car/addMonthCard')"
           >添加月卡</el-button
         >
-        <el-button type="primary">批量删除</el-button>
+        <el-button type="primary" @click="deleteMoreMonthCard"
+          >批量删除</el-button
+        >
       </div>
       <div class="tip-info">
         <i class="el-icon-warning" style="color: #1890ff"></i>
@@ -53,7 +55,11 @@
     </div>
     <!-- 表格区域 -->
 
-    <el-table :data="monthCardList" style="width: 100%">
+    <el-table
+      @selection-change="getSelectChange"
+      :data="monthCardList"
+      style="width: 100%"
+    >
       <el-table-column align="center" type="selection"> </el-table-column>
       <el-table-column align="center" type="index" label="序号">
       </el-table-column>
@@ -67,14 +73,22 @@
       </el-table-column>
       <el-table-column label="操作" width="180">
         <template v-slot="{ row }">
-          <el-button type="text">续费</el-button>
-          <el-button type="text">查看</el-button>
+          <el-button
+            type="text"
+            @click="$router.push(`/car/renewMonthCard/${row.id}`)"
+            >续费</el-button
+          >
+          <el-button
+            type="text"
+            @click="$router.push(`/car/viewMonthCard/${row.id}`)"
+            >查看</el-button
+          >
           <el-button
             type="text"
             @click="$router.push(`/car/editMonthCard/${row.id}`)"
             >编辑</el-button
           >
-          <el-button type="text">删除</el-button>
+          <el-button type="text" @click="handleDelete(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,7 +110,8 @@
 </template>
 
 <script>
-import { getCardListApi } from "@/api/monthCard";
+import { getCardListApi, deleteMonthCardApi } from "@/api/monthCard";
+
 export default {
   name: "MonthCard",
   data() {
@@ -113,6 +128,7 @@ export default {
       },
       // 总条数
       total: 0,
+      deleteParams: "",
     };
   },
   created() {
@@ -122,7 +138,6 @@ export default {
     // 获取用卡列表
     async getMonthCardList() {
       const res = await getCardListApi(this.queryParams);
-      console.log("ressss=>", res);
       this.monthCardList = res.data.rows;
       this.total = res.data.total;
     },
@@ -143,6 +158,38 @@ export default {
     handleSizeChange(size) {
       this.queryParams.pageSize = size;
       this.getMonthCardList();
+    },
+    // 删除
+    handleDelete(id) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const res = await deleteMonthCardApi(id);
+          this.$message.success("删除成功");
+          this.getMonthCardList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 获取复选框选中的数据
+    getSelectChange(data) {
+      console.log("data=>", data);
+      const ids = data.map((item) => item.id);
+      this.deleteParams = ids.join();
+    },
+    // 批量删除
+    async deleteMoreMonthCard() {
+      if (!this.deleteParams) {
+        return this.$message.info("请选择要删除的数据");
+      }
+      this.handleDelete(this.deleteParams);
     },
   },
 };

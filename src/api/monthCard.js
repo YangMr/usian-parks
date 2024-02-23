@@ -48,3 +48,40 @@ export const editMonthCardApi = (data) => {
     data,
   });
 };
+
+/**
+ * 删除月卡 包含了单个删除以及批量删除
+ * @param {*} ids
+ * @returns
+ */
+export const deleteMonthCardApi = (ids) => {
+  return request({
+    url: `/parking/card/${ids}`,
+    method: "DELETE",
+  });
+};
+
+/**
+ * 月卡续费
+ * @param {*} data
+ * @returns
+ */
+export const rechargeMonthCardApi = (data) => {
+  return request({
+    url: "/parking/card/recharge",
+    method: "POST",
+    data,
+  });
+};
+
+/**
+ * 查看月卡详情
+ * @param {*} id
+ * @returns
+ */
+export const findMonthCardDetailApi = (id) => {
+  return request({
+    url: `/parking/card/${id}`,
+    method: "GET",
+  });
+};

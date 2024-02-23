@@ -44,7 +44,6 @@ const actions = {
     try {
       // 调用获取用户信息接口
       const { data } = await getInfoApi();
-      console.log("Res==>", data);
       // 存储token
       commit("setUserInfo", data);
     } catch (error) {

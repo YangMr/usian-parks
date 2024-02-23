@@ -178,6 +178,16 @@ export const constantRoutes = [
     component: () => import("@/views/Car/EditMonthCard/index"),
     hidden: true,
   },
+  {
+    path: "/car/renewMonthCard/:id",
+    component: () => import("@/views/Car/RenewMonthCard/index"),
+    hidden: true,
+  },
+  {
+    path: "/car/viewMonthCard/:id",
+    component: () => import("@/views/Car/ViewMonthCard/index"),
+    hidden: true,
+  },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

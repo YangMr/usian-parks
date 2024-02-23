@@ -1,6 +1,6 @@
 <template>
   <div class="add-card">
-    <CustomHeader content="添加月卡" />
+    <CustomHeader content="月卡续费" />
 
     <div class="add-main">
       <div class="form-container">
@@ -16,6 +16,7 @@
             <el-form-item label="车主姓名" prop="personName">
               <el-input
                 size="small"
+                disabled
                 v-model="carInfoForm.personName"
                 placeholder="请输入车主姓名"
               ></el-input>
@@ -24,6 +25,7 @@
               <el-input
                 style="width: 100%"
                 size="small"
+                disabled
                 v-model="carInfoForm.phoneNumber"
                 placeholder="请输入联系方式"
               ></el-input>
@@ -31,6 +33,7 @@
             <el-form-item label="车牌号码" prop="carNumber">
               <el-input
                 size="small"
+                disabled
                 v-model="carInfoForm.carNumber"
                 placeholder="请输入车牌号码"
               ></el-input>
@@ -38,6 +41,7 @@
             <el-form-item label="车辆品牌" prop="carBrand">
               <el-input
                 size="small"
+                disabled
                 v-model="carInfoForm.carBrand"
                 placeholder="请输入车辆品牌"
               ></el-input>
@@ -91,9 +95,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import CustomHeader from "@/components/CustomHeader/index.vue";
-import { addMonthCardApi } from "@/api/monthCard";
+import { getMonthCardDetailApi, rechargeMonthCardApi } from "@/api/monthCard";
 export default {
   name: "AddMonthCard",
   components: {
@@ -101,6 +104,7 @@ export default {
   },
   data() {
     return {
+      id: "",
       carInfoForm: {
         personName: "",
         phoneNumber: "",
@@ -164,6 +168,10 @@ export default {
       },
     };
   },
+  created() {
+    if (this.$route.params.id) this.id = this.$route.params.id;
+    this.initCardDetail();
+  },
   methods: {
     submitMonthCard() {
       this.$refs.carInfoForm.validate((valid) => {
@@ -172,14 +180,14 @@ export default {
           this.$refs.feeForm.validate(async (valid) => {
             if (valid) {
               const data = {
-                ...that.carInfoForm,
                 cardStartDate: that.feeForm.date[0],
                 cardEndDate: that.feeForm.date[1],
                 paymentAmount: that.feeForm.paymentAmount,
                 paymentMethod: that.feeForm.paymentMethod,
+                carInfoId: that.carInfoForm.carInfoId,
               };
 
-              const res = await addMonthCardApi(data);
+              const res = await rechargeMonthCardApi(data);
 
               this.$router.push("/car/card");
             }
@@ -190,6 +198,23 @@ export default {
     handleFormReset() {
       this.$refs.carInfoForm.resetFields();
       this.$refs.feeForm.resetFields();
+    },
+    async initCardDetail() {
+      const { data } = await getMonthCardDetailApi(this.id);
+
+      this.carInfoForm = {
+        personName: data.personName,
+        phoneNumber: data.phoneNumber,
+        carNumber: data.carNumber,
+        carBrand: data.carBrand,
+        carInfoId: data.carInfoId,
+      };
+      this.feeForm = {
+        date: [data.cardStartDate, data.cardEndDate],
+        paymentAmount: data.paymentAmount,
+        paymentMethod: data.paymentMethod,
+        rechargeId: data.rechargeId,
+      };
     },
   },
 };
