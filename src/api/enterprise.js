@@ -24,3 +24,16 @@ export const enterpriseRentApi = (id) => {
     method: "GET",
   });
 };
+
+/**
+ * 园区管理-添加/续租企业的租赁合同
+ * @param {*} data
+ * @returns
+ */
+export const addEnterpriseRrentApi = (data) => {
+  return request({
+    url: "/park/enterprise/rent",
+    method: "POST",
+    data,
+  });
+};
