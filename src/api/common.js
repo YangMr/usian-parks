@@ -15,3 +15,18 @@ export const uploadApi = (data) => {
     data,
   });
 };
+
+/**
+ * 下载接口
+ * @param {*} id
+ * @returns
+ */
+export const downloadApi = (id) => {
+  return request({
+    url: `/download/${id}`,
+    method: "GET",
+    headers: {
+      responseType: "blob",
+    },
+  });
+};

@@ -28,6 +28,19 @@ service.interceptors.response.use(
   (response) => {
     // 对返回的数据解构了一层data
     const res = response.data;
+    // console.log("aaa", res);
+    // console.log(res instanceof Blob);
+    // 将文件转化为blob数据流
+    // if (res instanceof Blob) {
+    //   return res;
+    // }
+    // if (
+    //   response.headers["content-type"].includes(
+    //     "multipart/form-data;charset=UTF-8"
+    //   )
+    // ) {
+    //   return res;
+    // }
 
     // 请求成功
     if (res.code === 10000) {
