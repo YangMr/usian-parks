@@ -188,6 +188,11 @@ export const constantRoutes = [
     component: () => import("@/views/Car/ViewMonthCard/index"),
     hidden: true,
   },
+  {
+    path: "/park/enterprise/add",
+    component: () => import("@/views/Park/Enterprise/add"),
+    hidden: true,
+  },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

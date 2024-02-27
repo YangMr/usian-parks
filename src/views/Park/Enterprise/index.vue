@@ -21,7 +21,11 @@
     <!-- 操作区域 -->
     <div class="action">
       <div class="button-group">
-        <el-button type="primary">添加企业</el-button>
+        <el-button
+          type="primary"
+          @click="$router.push('/park/enterprise/add?mode=add')"
+          >添加企业</el-button
+        >
       </div>
     </div>
     <!-- 表格区域 -->
@@ -78,7 +82,11 @@
         <template v-slot="{ row }">
           <el-button type="text" @click="openDialog(row)">添加合同</el-button>
           <el-button type="text">查看</el-button>
-          <el-button type="text">编辑</el-button>
+          <el-button
+            type="text"
+            @click="$router.push(`/park/enterprise/add?mode=edit&id=${row.id}`)"
+            >编辑</el-button
+          >
           <el-button type="text">删除</el-button>
         </template>
       </el-table-column>
@@ -317,15 +325,15 @@ export default {
     },
   },
 
-  // 1. 打开选择文件的弹窗 这一步el-button已经帮我们处理好了
-  // 2. 获取已选择的文件
-  // 3. 判断文件的格式
-  // 4. 判断文件的大小
-  // 5. 实例化form data
-  // 6. 将需要上传的文件信息(在接口文档中看)添加到form data中
-  // 7. 封装上传文件api接口, 注意: content-type的类型需要设置为 formdata类型
-  // 8. 调用文件上传接口, 将formdata数据通过接口传给后台
-  // 9. 上传成功后, 获取后台返回的文件信息, 进行展示 / 或者其他的一些操作
+  // 1. 打开选择文件的弹窗 这一步el-button已经帮我们处理好了 ✔️
+  // 2. 获取已选择的文件 ✔️
+  // 3. 判断文件的格式 ✔️
+  // 4. 判断文件的大小 ✔️
+  // 5. 实例化form data ✔️
+  // 6. 将需要上传的文件信息(在接口文档中看)添加到form data中 ✔️
+  // 7. 封装上传文件api接口, 注意: content-type的类型需要设置为 formdata类型 ✔️
+  // 8. 调用文件上传接口, 将formdata数据通过接口传给后台 ✔️
+  // 9. 上传成功后, 获取后台返回的文件信息, 进行展示 / 或者其他的一些操作 ✔️
 };
 </script>
 
