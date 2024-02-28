@@ -46,6 +46,8 @@ const actions = {
       const { data } = await getInfoApi();
       // 存储token
       commit("setUserInfo", data);
+      // 将数据返回出去了
+      return data;
     } catch (error) {
       console.log(error);
     }
