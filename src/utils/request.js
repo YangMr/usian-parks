@@ -60,6 +60,7 @@ service.interceptors.response.use(
     if (error.response.status === 401 && error.response.data.code === 40001) {
       // 1.清除token与用户信息
       await store.dispatch("user/logout");
+      await store.commit("menu/resetMenu");
 
       // 2. 跳转到登录
       router.push("/login");

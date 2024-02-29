@@ -82,19 +82,18 @@ router.beforeEach(async (to, from, next) => {
         try {
           // 1. 先拿到后台返回的权限点数据
           const { permissions } = await store.dispatch("user/userInfo");
-          console.log("permissions", permissions);
+
           // 拿到一级路由权限点数据
           const firstPerms = getFirstRoutePerms(permissions);
-          console.log("firstPerms", firstPerms);
+
           // 拿到二级路由权限点数据
           const secondPerms = getSecondRoutePerms(permissions);
-          console.log("secondPerms", secondPerms);
 
           // 2. 再拿到自定义的路由表
 
           // 3. 匹配出当前登录的用户所有拥有的自定义的动态路由表
           const newRoutes = getRoutes(firstPerms, secondPerms, asyncRoutes);
-          console.log("newRoutes", newRoutes);
+
           // 4. 动态的添加到路由表
           router.addRoutes([
             ...newRoutes, // 404 page must be placed at the end !!!
@@ -110,6 +109,7 @@ router.beforeEach(async (to, from, next) => {
           console.log("error=>", error);
           // 失败, 清空token 以及 用户信息
           await store.dispatch("user/logout");
+          await store.commit("menu/resetMenu");
           // 进行错误信息提示
           Message.error(error || "Has Error");
           // 跳转到登录页

@@ -16,6 +16,11 @@ import router from "./router";
 import "@/icons"; // icon
 import "@/permission"; // permission control
 
+import "./directive";
+// 全局组件
+import AuthBtn from "./components/AuthBtn/index.vue";
+Vue.component("AuthBtn", AuthBtn);
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

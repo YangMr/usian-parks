@@ -45,6 +45,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch("user/logout");
+      await this.$store.commit("menu/resetMenu");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     },
   },
